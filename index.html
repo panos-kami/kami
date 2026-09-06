@@ -1,0 +1,2879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>For you ♡</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Italiana&family=Special+Elite&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0
+}
+
+:root{
+  --cream:#fff6e8;
+  --red:#c56c63;
+  --dark:#120b09;
+}
+
+html,
+body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:#000;
+}
+
+body{
+  font-family:"DM Mono",monospace;
+}
+
+button{
+  font:inherit;
+}
+
+img,
+video{
+  display:block;
+}
+
+#app{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+
+/* =====================================================
+   VIDEO — ALWAYS THE BACKGROUND
+===================================================== */
+
+#bgVideo{
+  position:fixed;
+  inset:0;
+  z-index:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  filter:
+    brightness(.65)
+    saturate(.9);
+
+  transform:scale(1.015);
+}
+
+.videoShade{
+  position:fixed;
+  inset:0;
+  z-index:1;
+
+  pointer-events:none;
+
+  background:
+    radial-gradient(
+      circle at center,
+      transparent 15%,
+      rgba(10,5,3,.18) 60%,
+      rgba(8,4,3,.48) 100%
+    );
+}
+
+
+/* =====================================================
+   GRAIN
+===================================================== */
+
+.grain{
+  position:fixed;
+  inset:0;
+  z-index:999;
+
+  pointer-events:none;
+
+  opacity:.12;
+
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+
+  mix-blend-mode:soft-light;
+}
+
+
+/* =====================================================
+   SCREENS
+===================================================== */
+
+.screen{
+  position:absolute;
+  inset:0;
+  z-index:5;
+
+  width:100%;
+  height:100%;
+
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+
+  transform:scale(1.035);
+
+  transition:
+    opacity .7s ease,
+    transform .9s cubic-bezier(.2,.8,.2,1),
+    visibility .7s;
+}
+
+.screen.active{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+
+  transform:scale(1);
+}
+
+
+/* =====================================================
+   BIG NAVIGATION
+===================================================== */
+
+.nav{
+  position:absolute;
+  z-index:100;
+
+  top:50%;
+
+  width:74px;
+  height:74px;
+
+  border:2px solid rgba(255,246,232,.85);
+  border-radius:50%;
+
+  color:#fff6e8;
+  background:rgba(15,8,5,.4);
+
+  backdrop-filter:blur(8px);
+
+  font-size:32px;
+
+  cursor:pointer;
+
+  transform:translateY(-50%);
+
+  box-shadow:
+    0 12px 40px rgba(0,0,0,.35),
+    0 0 25px rgba(255,255,255,.08);
+
+  transition:.25s;
+}
+
+.nav:hover{
+  background:#fff6e8;
+  color:#1b0e09;
+
+  transform:
+    translateY(-50%)
+    scale(1.1);
+}
+
+.back{
+  left:25px;
+}
+
+.next{
+  right:25px;
+}
+
+.counter{
+  position:absolute;
+  z-index:90;
+
+  left:50%;
+  bottom:25px;
+
+  transform:translateX(-50%);
+
+  color:rgba(255,246,232,.65);
+
+  font-size:9px;
+  letter-spacing:.35em;
+}
+
+
+/* =====================================================
+   GATE
+===================================================== */
+
+#gate{
+  z-index:50;
+}
+
+.gateDark{
+  position:absolute;
+  inset:0;
+
+  background:
+    rgba(7,3,2,.42);
+}
+
+.gateContent{
+  position:absolute;
+  z-index:5;
+
+  left:50%;
+  top:50%;
+
+  width:min(900px,90vw);
+
+  transform:translate(-50%,-50%);
+
+  color:var(--cream);
+
+  text-align:center;
+}
+
+.gateTiny{
+  margin-bottom:22px;
+
+  font-size:9px;
+  letter-spacing:.45em;
+
+  opacity:.6;
+}
+
+.gateContent h1{
+  font-family:"Italiana",serif;
+
+  font-size:clamp(75px,13vw,190px);
+  font-weight:400;
+
+  line-height:.75;
+}
+
+.gateContent h1 span{
+  display:block;
+
+  margin-top:25px;
+
+  color:var(--red);
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(17px,2vw,29px);
+}
+
+.startBtn{
+  margin-top:55px;
+
+  padding:20px 34px;
+
+  border:1px solid rgba(255,246,232,.75);
+  border-radius:999px;
+
+  color:var(--cream);
+  background:rgba(10,5,3,.35);
+
+  backdrop-filter:blur(7px);
+
+  font-size:11px;
+  letter-spacing:.23em;
+
+  cursor:pointer;
+
+  transition:.3s;
+}
+
+.startBtn:hover{
+  color:#1b0e09;
+  background:var(--cream);
+
+  transform:translateY(-4px);
+}
+
+
+/* =====================================================
+   INTRO
+===================================================== */
+
+#intro .softDark{
+  position:absolute;
+  inset:0;
+
+  background:
+    rgba(9,4,3,.36);
+}
+
+.introBox{
+  position:absolute;
+  z-index:10;
+
+  left:50%;
+  top:50%;
+
+  width:min(700px,78vw);
+
+  transform:translate(-50%,-50%);
+
+  color:var(--cream);
+
+  text-align:center;
+}
+
+.introBox small{
+  display:block;
+
+  margin-bottom:25px;
+
+  color:var(--red);
+
+  font-size:9px;
+  letter-spacing:.4em;
+}
+
+.introBox h2{
+  margin-bottom:28px;
+
+  font-family:"Italiana",serif;
+
+  font-size:clamp(55px,8vw,120px);
+  font-weight:400;
+
+  line-height:.82;
+}
+
+.introBox p{
+  max-width:570px;
+
+  margin:0 auto 15px;
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(13px,1.35vw,17px);
+
+  line-height:1.65;
+
+  opacity:.86;
+}
+
+.introLove{
+  margin-top:27px;
+
+  color:var(--red);
+
+  font-family:"Italiana",serif;
+
+  font-size:clamp(30px,4vw,53px);
+}
+
+.introPs{
+  max-width:500px;
+
+  margin:26px auto 0;
+
+  padding-top:19px;
+
+  border-top:
+    1px solid rgba(255,246,232,.25);
+
+  font-family:"Special Elite",serif;
+
+  font-size:11px;
+
+  line-height:1.55;
+
+  opacity:.65;
+}
+
+
+/* =====================================================
+   MEMORY COLLAGE
+===================================================== */
+
+#memoryOne .screenShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(9,4,3,.66),
+      rgba(9,4,3,.18),
+      rgba(9,4,3,.4)
+    );
+}
+
+.memoryHeading{
+  position:absolute;
+  z-index:40;
+
+  left:7%;
+  top:8%;
+
+  color:var(--cream);
+
+  font-family:"Italiana",serif;
+
+  font-size:clamp(55px,8vw,125px);
+  font-weight:400;
+
+  line-height:.8;
+}
+
+.memoryHeading span{
+  display:block;
+
+  margin:20px 0 0 60px;
+
+  color:var(--red);
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(14px,1.7vw,23px);
+}
+
+.polaroid{
+  position:absolute;
+
+  padding:9px 9px 45px;
+
+  background:#f4ead7;
+
+  box-shadow:
+    0 30px 65px rgba(0,0,0,.48);
+
+  transition:.3s;
+}
+
+.polaroid:hover{
+  z-index:60;
+
+  transform:
+    rotate(0deg)
+    scale(1.06) !important;
+}
+
+.polaroid img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.polaroid.one{
+  left:8%;
+  bottom:6%;
+
+  width:min(280px,23vw);
+  height:min(370px,48vh);
+
+  transform:rotate(-8deg);
+}
+
+.polaroid.two{
+  left:50%;
+  top:51%;
+
+  z-index:15;
+
+  width:min(410px,33vw);
+  height:min(550px,64vh);
+
+  transform:
+    translate(-50%,-50%)
+    rotate(2deg);
+}
+
+.polaroid.two:hover{
+  transform:
+    translate(-50%,-50%)
+    rotate(0)
+    scale(1.05) !important;
+}
+
+.polaroid.three{
+  right:8%;
+  bottom:7%;
+
+  width:min(290px,24vw);
+  height:min(390px,50vh);
+
+  transform:rotate(8deg);
+}
+
+.polaroid span{
+  position:absolute;
+
+  left:16px;
+  bottom:14px;
+
+  color:#4b3429;
+
+  font-family:"Special Elite",serif;
+
+  font-size:10px;
+}
+
+.tinyMemoryText{
+  position:absolute;
+  z-index:40;
+
+  right:7%;
+  top:11%;
+
+  color:var(--cream);
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(14px,1.5vw,21px);
+
+  transform:rotate(4deg);
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:700px){
+
+  .nav{
+    width:62px;
+    height:62px;
+
+    font-size:27px;
+  }
+
+  .back{
+    left:12px;
+  }
+
+  .next{
+    right:12px;
+  }
+
+  .introBox{
+    width:72vw;
+  }
+
+  .introBox h2{
+    font-size:15vw;
+  }
+
+  .introBox p{
+    font-size:11px;
+  }
+
+  .introPs{
+    font-size:9px;
+  }
+
+  .memoryHeading{
+    left:5%;
+    top:7%;
+
+    font-size:17vw;
+  }
+
+  .memoryHeading span{
+    margin-left:20px;
+
+    font-size:11px;
+  }
+
+  .polaroid.one{
+    left:-11%;
+    bottom:7%;
+
+    width:45vw;
+    height:36vh;
+  }
+
+  .polaroid.two{
+    width:62vw;
+    height:53vh;
+  }
+
+  .polaroid.three{
+    right:-12%;
+    bottom:7%;
+
+    width:45vw;
+    height:37vh;
+  }
+
+  .tinyMemoryText{
+    right:5%;
+    top:19%;
+
+    width:140px;
+
+    font-size:11px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="app">
+
+<!-- VIDEO EXISTS ON EVERY SCREEN -->
+
+<video
+  id="bgVideo"
+  src="Video (3).mp4"
+  loop
+  playsinline
+  preload="auto">
+</video>
+
+<div class="videoShade"></div>
+<div class="grain"></div>
+
+
+<!-- =====================================================
+     0 — START
+===================================================== -->
+
+<section
+  class="screen active"
+  id="gate"
+  data-page="0">
+
+  <div class="gateDark"></div>
+
+  <div class="gateContent">
+
+    <div class="gateTiny">
+      MADE WITH A LITTLE TOO MUCH LOVE
+    </div>
+
+    <h1>
+      for you
+
+      <span>
+        good morning, my princess ♡
+      </span>
+    </h1>
+
+    <button
+      class="startBtn"
+      id="startBtn">
+
+      GOOD MORNING KAMI ♡
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     1 — INTRO
+===================================================== -->
+
+<section
+  class="screen"
+  id="intro"
+  data-page="1">
+
+  <div class="softDark"></div>
+
+  <div class="introBox">
+
+    <small>
+      GOOD MORNING MY LOVE
+    </small>
+
+    <h2>
+      my little<br>
+      answer.
+    </h2>
+
+    <p>
+      I told you I would answer you, and I wanted to do it in a special way.
+      With my way, as always!
+    </p>
+
+    <p>
+        I know you are a very special person, and I wanted to show you...
+    </p>
+
+    <p>
+      Maybe this is one of the ways I know best.
+    </p>
+
+    <div class="introLove">
+      I love you. ♡
+    </div>
+
+    <div class="introPs">
+    YES: It may have cost me a few hours of sleep,
+      but I really wanted to show you how much I love you.
+      Worth it. I can do it again ♡
+    </div>
+
+  </div>
+
+  <button
+    class="nav next"
+    onclick="go(2)">
+    →
+  </button>
+
+  <div class="counter">
+    01 / 09
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     2 — FIRST MEMORIES
+===================================================== -->
+
+<section
+  class="screen"
+  id="memoryOne"
+  data-page="2">
+
+  <div class="screenShade"></div>
+
+  <h2 class="memoryHeading">
+    us.
+
+    <span>
+      somehow, my favorite thing.
+    </span>
+  </h2>
+
+
+  <div class="polaroid one">
+
+    <img
+      src="2e12fe77-254f-4f9d-8ec6-963f49578533.jpeg"
+      alt="">
+
+    <span>
+      you & me
+    </span>
+
+  </div>
+
+
+  <div class="polaroid two">
+
+    <img
+      src="IMG_2331.jpeg"
+      alt="">
+
+    <span>
+      ♡
+    </span>
+
+  </div>
+
+
+  <div class="polaroid three">
+
+    <img
+      src="385af408-ca01-4557-ad7c-b7b4840df4d5.jpeg"
+      alt="">
+
+    <span>
+      still us.
+    </span>
+
+  </div>
+
+
+  <div class="tinyMemoryText">
+    Very happy<br>
+    I found you.
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(1)">
+    ←
+  </button>
+
+  <button
+    class="nav next"
+    onclick="go(3)">
+    →
+  </button>
+
+  <div class="counter">
+    02 / 09
+  </div>
+
+</section>
+<style>
+
+/* =====================================================
+   3 — CHAOS / FACES
+===================================================== */
+
+#faces .screenShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    rgba(8,4,3,.44);
+}
+
+.facesTitle{
+  position:absolute;
+  z-index:40;
+
+  left:6%;
+  top:8%;
+
+  color:var(--cream);
+
+  font-family:"Italiana",serif;
+
+  font-size:clamp(58px,8vw,120px);
+  font-weight:400;
+
+  line-height:.78;
+}
+
+.facesTitle span{
+  display:block;
+
+  margin:18px 0 0 55px;
+
+  color:var(--red);
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(14px,1.7vw,22px);
+}
+
+.facePhoto{
+  position:absolute;
+
+  overflow:hidden;
+
+  border:7px solid #f4ead7;
+
+  box-shadow:
+    0 28px 65px rgba(0,0,0,.5);
+
+  transition:.3s;
+}
+
+.facePhoto img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.facePhoto:hover{
+  z-index:80;
+
+  transform:
+    rotate(0)
+    scale(1.06) !important;
+}
+
+.face1{
+  left:7%;
+  bottom:5%;
+
+  width:min(270px,22vw);
+  height:min(360px,47vh);
+
+  transform:rotate(-8deg);
+}
+
+.face2{
+  left:35%;
+  top:20%;
+
+  width:min(330px,26vw);
+  height:min(255px,33vh);
+
+  transform:rotate(4deg);
+}
+
+.face3{
+  right:7%;
+  top:9%;
+
+  width:min(280px,23vw);
+  height:min(375px,48vh);
+
+  transform:rotate(8deg);
+}
+
+.face4{
+  right:26%;
+  bottom:4%;
+
+  width:min(315px,25vw);
+  height:min(260px,34vh);
+
+  transform:rotate(-5deg);
+}
+
+.faceNote{
+  position:absolute;
+  z-index:70;
+
+  left:44%;
+  bottom:12%;
+
+  padding:13px 18px;
+
+  background:#e6c36e;
+
+  color:#2f2119;
+
+  font-family:"Special Elite",serif;
+
+  font-size:12px;
+
+  transform:rotate(4deg);
+
+  box-shadow:
+    0 15px 30px rgba(0,0,0,.3);
+}
+
+
+/* =====================================================
+   4 — VILNIUS
+===================================================== */
+
+#vilnius .screenShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8,4,3,.75),
+      rgba(8,4,3,.28),
+      rgba(8,4,3,.18)
+    );
+}
+
+.vilniusText{
+  position:absolute;
+  z-index:40;
+
+  left:7%;
+  top:50%;
+
+  width:min(500px,80vw);
+
+  transform:translateY(-50%);
+
+  color:var(--cream);
+}
+
+.vilniusText small{
+  display:block;
+
+  margin-bottom:18px;
+
+  color:var(--red);
+
+  font-size:9px;
+  letter-spacing:.38em;
+}
+
+.vilniusText h2{
+  font-family:"Italiana",serif;
+
+  font-size:clamp(72px,10vw,150px);
+  font-weight:400;
+
+  line-height:.72;
+}
+
+.vilniusText h2 span{
+  display:block;
+
+  margin:25px 0 0 65px;
+
+  color:var(--red);
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(16px,1.8vw,25px);
+}
+
+.vilniusMini{
+  position:absolute;
+  z-index:30;
+
+  right:7%;
+  bottom:8%;
+
+  width:min(330px,28vw);
+  height:min(420px,55vh);
+
+  padding:10px 10px 52px;
+
+  background:#f5ebd8;
+
+  box-shadow:
+    0 35px 75px rgba(0,0,0,.5);
+
+  transform:rotate(6deg);
+}
+
+.vilniusMini img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.vilniusMini span{
+  position:absolute;
+
+  left:20px;
+  bottom:17px;
+
+  color:#49352a;
+
+  font-family:"Special Elite",serif;
+
+  font-size:10px;
+}
+
+
+/* =====================================================
+   5 — FILM STRIP
+===================================================== */
+
+#film .screenShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    rgba(7,3,2,.56);
+}
+
+.filmTitle{
+  position:absolute;
+  z-index:40;
+
+  left:5%;
+  top:8%;
+
+  color:var(--cream);
+
+  font-family:"Italiana",serif;
+
+  font-size:clamp(58px,8vw,120px);
+  font-weight:400;
+
+  line-height:.8;
+}
+
+.filmTitle span{
+  display:block;
+
+  margin:18px 0 0 55px;
+
+  color:var(--red);
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(14px,1.7vw,22px);
+}
+
+.filmWindow{
+  position:absolute;
+
+  left:0;
+  top:54%;
+
+  width:100%;
+
+  transform:translateY(-45%);
+
+  overflow:hidden;
+}
+
+.filmTrack{
+  display:flex;
+
+  gap:18px;
+
+  width:max-content;
+
+  padding:28px 18px;
+
+  background:
+    rgba(6,3,2,.72);
+
+  animation:
+    filmRoll 26s linear infinite;
+}
+
+@keyframes filmRoll{
+  from{
+    transform:translateX(0);
+  }
+
+  to{
+    transform:translateX(-50%);
+  }
+}
+
+.frame{
+  flex:0 0 auto;
+
+  width:225px;
+  height:320px;
+
+  padding:9px 9px 40px;
+
+  background:#eee1ca;
+
+  box-shadow:
+    0 20px 45px rgba(0,0,0,.48);
+
+  transform:rotate(var(--rot));
+}
+
+.frame img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.frame span{
+  display:block;
+
+  margin-top:10px;
+
+  color:#4b3429;
+
+  font-family:"Special Elite",serif;
+
+  font-size:10px;
+}
+
+.filmText{
+  position:absolute;
+  z-index:40;
+
+  right:6%;
+  bottom:8%;
+
+  color:var(--cream);
+
+  font-family:"Special Elite",serif;
+
+  font-size:13px;
+
+  opacity:.7;
+
+  transform:rotate(-3deg);
+}
+
+
+/* =====================================================
+   6 — KISS
+===================================================== */
+
+#kiss .screenShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    rgba(8,4,3,.32);
+}
+
+.kissWord{
+  position:absolute;
+
+  left:50%;
+  top:50%;
+
+  transform:
+    translate(-50%,-50%)
+    rotate(-8deg);
+
+  color:
+    rgba(255,246,232,.09);
+
+  font-family:"Italiana",serif;
+
+  font-size:clamp(190px,31vw,560px);
+
+  white-space:nowrap;
+}
+
+.kissMain{
+  position:absolute;
+  z-index:20;
+
+  left:50%;
+  top:50%;
+
+  width:min(450px,36vw);
+  height:min(590px,67vh);
+
+  padding:
+    10px 10px 58px;
+
+  background:#f7efdf;
+
+  box-shadow:
+    0 35px 75px rgba(0,0,0,.48);
+
+  transform:
+    translate(-50%,-50%)
+    rotate(2deg);
+}
+
+.kissMain img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.kissMain span{
+  position:absolute;
+
+  left:22px;
+  bottom:18px;
+
+  color:var(--red);
+
+  font-family:"Special Elite",serif;
+
+  font-size:11px;
+}
+
+.kissSide{
+  position:absolute;
+
+  padding:
+    8px 8px 42px;
+
+  background:#f7efdf;
+
+  box-shadow:
+    0 25px 55px rgba(0,0,0,.4);
+}
+
+.kissSide img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.kissLeft{
+  left:6%;
+  top:15%;
+
+  width:min(270px,22vw);
+  height:min(345px,44vh);
+
+  transform:rotate(-8deg);
+}
+
+.kissRight{
+  right:6%;
+  bottom:8%;
+
+  width:min(280px,23vw);
+  height:min(360px,46vh);
+
+  transform:rotate(8deg);
+}
+
+.kissText{
+  position:absolute;
+  z-index:40;
+
+  left:7%;
+  bottom:8%;
+
+  color:var(--cream);
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(15px,1.7vw,22px);
+
+  line-height:1.4;
+
+  transform:rotate(-4deg);
+}
+
+
+/* =====================================================
+   7 — ADVENTURE
+===================================================== */
+
+#adventure .screenShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(8,4,3,.28),
+      rgba(8,4,3,.46)
+    );
+}
+
+.adventurePhoto{
+  position:absolute;
+  z-index:20;
+
+  left:7%;
+  top:50%;
+
+  width:min(500px,41vw);
+  height:min(610px,68vh);
+
+  overflow:hidden;
+
+  transform:
+    translateY(-50%)
+    rotate(-4deg);
+
+  box-shadow:
+    0 35px 80px rgba(0,0,0,.46);
+}
+
+.adventurePhoto img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.adventureMini{
+  position:absolute;
+  z-index:25;
+
+  right:5%;
+  bottom:6%;
+
+  width:min(235px,19vw);
+  height:min(290px,36vh);
+
+  padding:
+    8px 8px 40px;
+
+  background:#f8f0df;
+
+  box-shadow:
+    0 20px 50px rgba(0,0,0,.42);
+
+  transform:rotate(7deg);
+}
+
+.adventureMini img{
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+}
+
+.adventureText{
+  position:absolute;
+  z-index:40;
+
+  right:8%;
+  top:47%;
+
+  width:min(470px,40vw);
+
+  transform:translateY(-50%);
+
+  color:var(--cream);
+}
+
+.adventureText small{
+  display:block;
+
+  margin-bottom:18px;
+
+  color:var(--red);
+
+  font-size:9px;
+  letter-spacing:.36em;
+}
+
+.adventureText h2{
+  font-family:"Italiana",serif;
+
+  font-size:clamp(65px,8vw,120px);
+  font-weight:400;
+
+  line-height:.8;
+}
+
+.adventureText p{
+  margin-top:25px;
+
+  font-family:"Special Elite",serif;
+
+  font-size:15px;
+
+  line-height:1.7;
+
+  opacity:.75;
+}
+
+
+/* =====================================================
+   8 — QUIZ
+===================================================== */
+
+#quiz .screenShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    rgba(8,4,3,.57);
+}
+
+.quizBox{
+  position:absolute;
+  z-index:40;
+
+  left:50%;
+  top:50%;
+
+  width:min(760px,80vw);
+
+  transform:translate(-50%,-50%);
+
+  color:var(--cream);
+
+  text-align:center;
+}
+
+.quizBox small{
+  display:block;
+
+  margin-bottom:20px;
+
+  color:var(--red);
+
+  font-size:9px;
+  letter-spacing:.4em;
+}
+
+.quizBox h2{
+  margin-bottom:30px;
+
+  font-family:"Italiana",serif;
+
+  font-size:clamp(50px,7vw,105px);
+  font-weight:400;
+
+  line-height:.85;
+}
+
+.answers{
+  display:grid;
+
+  gap:10px;
+
+  max-width:580px;
+
+  margin:0 auto;
+}
+
+.answer{
+  padding:15px 18px;
+
+  border:
+    1px solid rgba(255,246,232,.52);
+
+  color:var(--cream);
+
+  background:
+    rgba(8,4,3,.32);
+
+  backdrop-filter:blur(8px);
+
+  font-family:"Special Elite",serif;
+
+  cursor:pointer;
+
+  transition:.25s;
+}
+
+.answer:hover{
+  color:#1a0d09;
+
+  background:var(--cream);
+
+  transform:translateX(6px);
+}
+
+#quizResult{
+  min-height:45px;
+
+  margin-top:22px;
+
+  color:var(--red);
+
+  font-family:"Special Elite",serif;
+
+  font-size:14px;
+}
+
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:700px){
+
+  .facesTitle{
+    left:5%;
+    top:8%;
+
+    font-size:18vw;
+  }
+
+  .facesTitle span{
+    margin-left:20px;
+
+    font-size:11px;
+  }
+
+  .face1{
+    left:-9%;
+    bottom:5%;
+
+    width:43vw;
+    height:38vh;
+  }
+
+  .face2{
+    left:25%;
+    top:22%;
+
+    width:47vw;
+    height:26vh;
+  }
+
+  .face3{
+    right:-9%;
+    top:10%;
+
+    width:42vw;
+    height:36vh;
+  }
+
+  .face4{
+    right:8%;
+    bottom:5%;
+
+    width:49vw;
+    height:27vh;
+  }
+
+  .faceNote{
+    left:31%;
+    bottom:28%;
+
+    font-size:9px;
+  }
+
+  .vilniusText{
+    left:6%;
+    top:38%;
+  }
+
+  .vilniusText h2{
+    font-size:21vw;
+  }
+
+  .vilniusText h2 span{
+    margin-left:20px;
+
+    font-size:13px;
+  }
+
+  .vilniusMini{
+    right:4%;
+    bottom:8%;
+
+    width:43vw;
+    height:31vh;
+  }
+
+  .filmTitle{
+    top:8%;
+
+    font-size:17vw;
+  }
+
+  .filmTitle span{
+    margin-left:20px;
+
+    font-size:11px;
+  }
+
+  .frame{
+    width:180px;
+    height:255px;
+  }
+
+  .filmText{
+    right:5%;
+    bottom:9%;
+
+    font-size:9px;
+  }
+
+  .kissMain{
+    width:63vw;
+    height:53vh;
+  }
+
+  .kissLeft{
+    left:-14%;
+    top:8%;
+
+    width:42vw;
+    height:33vh;
+  }
+
+  .kissRight{
+    right:-14%;
+    bottom:7%;
+
+    width:43vw;
+    height:34vh;
+  }
+
+  .kissText{
+    left:5%;
+    bottom:8%;
+
+    width:160px;
+
+    font-size:11px;
+  }
+
+  .adventurePhoto{
+    left:0;
+    top:10%;
+
+    width:63vw;
+    height:44vh;
+
+    transform:rotate(-4deg);
+  }
+
+  .adventureMini{
+    right:-7%;
+    top:18%;
+
+    width:42vw;
+    height:29vh;
+  }
+
+  .adventureText{
+    left:7%;
+    right:auto;
+    top:auto;
+    bottom:10%;
+
+    width:82vw;
+
+    transform:none;
+  }
+
+  .adventureText h2{
+    font-size:17vw;
+  }
+
+  .adventureText p{
+    margin-top:16px;
+
+    font-size:11px;
+  }
+
+  .quizBox{
+    width:72vw;
+  }
+
+  .quizBox h2{
+    font-size:13vw;
+  }
+
+  .answer{
+    padding:13px;
+
+    font-size:10px;
+  }
+
+}
+
+</style>
+
+
+<!-- =====================================================
+     3 — FACES
+===================================================== -->
+
+<section
+  class="screen"
+  id="faces"
+  data-page="3">
+
+  <div class="screenShade"></div>
+
+  <h2 class="facesTitle">
+    very<br>
+    normal.
+
+    <span>
+      obviously.
+    </span>
+  </h2>
+
+
+  <div class="facePhoto face1">
+
+    <img
+      src="IMG_2363.jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="facePhoto face2">
+
+    <img
+      src="d823be97-6b97-4c09-a6e3-08770e50e0f1.jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="facePhoto face3">
+
+    <img
+      src="a8edecc8-fb95-4286-ba63-b35633502c0d (1).jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="facePhoto face4">
+
+    <img
+      src="0cf6665b-996c-478b-8986-fbf91a1d1260.jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="faceNote">
+    no cure found.
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(2)">
+    ←
+  </button>
+
+  <button
+    class="nav next"
+    onclick="go(4)">
+    →
+  </button>
+
+  <div class="counter">
+    03 / 09
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     4 — VILNIUS
+===================================================== -->
+
+<section
+  class="screen"
+  id="vilnius"
+  data-page="4">
+
+  <div class="screenShade"></div>
+
+
+  <div class="vilniusText">
+
+    <small>
+      VILNIUS
+    </small>
+
+    <h2>
+      this city
+
+      <span>
+        now means you.
+      </span>
+    </h2>
+
+  </div>
+
+
+  <div class="vilniusMini">
+
+    <img
+      src="fd13db0a-b423-4759-b148-f23dec31a6d4.jpeg"
+      alt="">
+
+    <span>
+      zero seriousness.
+    </span>
+
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(3)">
+    ←
+  </button>
+
+  <button
+    class="nav next"
+    onclick="go(5)">
+    →
+  </button>
+
+  <div class="counter">
+    04 / 09
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     5 — FILM
+===================================================== -->
+
+<section
+  class="screen"
+  id="film"
+  data-page="5">
+
+  <div class="screenShade"></div>
+
+  <h2 class="filmTitle">
+    little<br>
+    moments
+
+    <span>
+      I keep all of them.
+    </span>
+  </h2>
+
+
+  <div class="filmWindow">
+
+    <div class="filmTrack">
+
+
+      <div
+        class="frame"
+        style="--rot:-3deg">
+
+        <img
+          src="62ab95d7-a047-46f7-985a-7a8bebc07649.jpeg"
+          alt="">
+
+        <span>
+          you + me
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:3deg">
+
+        <img
+          src="0cf6665b-996c-478b-8986-fbf91a1d1260.jpeg"
+          alt="">
+
+        <span>
+          very serious
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:-2deg">
+
+        <img
+          src="2e12fe77-254f-4f9d-8ec6-963f49578533.jpeg"
+          alt="">
+
+        <span>
+          ♡
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:4deg">
+
+        <img
+          src="385af408-ca01-4557-ad7c-b7b4840df4d5.jpeg"
+          alt="">
+
+        <span>
+          cinema.
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:-4deg">
+
+        <img
+          src="8625182f-9daf-45e0-ba51-a43df2565ffa.jpeg"
+          alt="">
+
+        <span>
+          us.
+        </span>
+
+      </div>
+
+
+      <!-- SAME AGAIN FOR LOOP -->
+
+
+      <div
+        class="frame"
+        style="--rot:-3deg">
+
+        <img
+          src="d823be97-6b97-4c09-a6e3-08770e50e0f1.jpeg"
+          alt="">
+
+        <span>
+          you + me
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:3deg">
+
+        <img
+          src="a8edecc8-fb95-4286-ba63-b35633502c0d (1).jpeg"
+          alt="">
+
+        <span>
+          very serious
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:-2deg">
+
+        <img
+          src="IMG_2363.jpeg"
+          alt="">
+
+        <span>
+          ♡
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:4deg">
+
+        <img
+          src="IMG_2331.jpeg"
+          alt="">
+
+        <span>
+          cinema.
+        </span>
+
+      </div>
+
+
+      <div
+        class="frame"
+        style="--rot:-4deg">
+
+        <img
+          src="eafe4c88-db2b-4358-84df-e1c235f13f7b.jpeg"
+          alt="">
+
+        <span>
+          us.
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="filmText">
+    I remember.
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(4)">
+    ←
+  </button>
+
+  <button
+    class="nav next"
+    onclick="go(6)">
+    →
+  </button>
+
+  <div class="counter">
+    05 / 09
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     6 — KISS
+===================================================== -->
+
+<section
+  class="screen"
+  id="kiss"
+  data-page="6">
+
+  <div class="screenShade"></div>
+
+  <div class="kissWord">
+    KISS
+  </div>
+
+
+  <div class="kissSide kissLeft">
+
+    <img
+      src="f52658b8-7033-4267-8dfd-ab81dd57f348 (1).jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="kissMain">
+
+    <img
+      src="a8edecc8-fb95-4286-ba63-b35633502c0d (1).jpeg"
+      alt="">
+
+    <span>
+      again?
+    </span>
+
+  </div>
+
+
+  <div class="kissSide kissRight">
+
+    <img
+      src="62ab95d7-a047-46f7-985a-7a8bebc07649.jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="kissText">
+    one more.<br>
+    always.
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(5)">
+    ←
+  </button>
+
+  <button
+    class="nav next"
+    onclick="go(7)">
+    →
+  </button>
+
+  <div class="counter">
+    06 / 09
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     7 — ADVENTURE
+===================================================== -->
+
+<section
+  class="screen"
+  id="adventure"
+  data-page="7">
+
+  <div class="screenShade"></div>
+
+
+  <div class="adventurePhoto">
+
+    <img
+      src="92444126-48bb-466c-8efa-a7cddb5aea5e.jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="adventureMini">
+
+    <img
+      src="4736e1b4-80df-43ef-acbb-10769e73d47a.jpeg"
+      alt="">
+
+  </div>
+
+
+  <div class="adventureText">
+
+    <small>
+      US
+    </small>
+
+    <h2>
+      with you.
+    </h2>
+
+    <p>
+      trips.<br>
+      chaos.<br>
+      everything.
+    </p>
+
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(6)">
+    ←
+  </button>
+
+  <button
+    class="nav next"
+    onclick="go(8)">
+    →
+  </button>
+
+  <div class="counter">
+    07 / 09
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     8 — QUIZ
+===================================================== -->
+
+<section
+  class="screen"
+  id="quiz"
+  data-page="8">
+
+  <div class="screenShade"></div>
+
+
+  <div class="quizBox">
+
+    <small>
+      VERY IMPORTANT QUESTION
+    </small>
+
+    <h2>
+      our love language?
+    </h2>
+
+
+    <div class="answers">
+
+      <button
+        class="answer"
+        onclick="answerQuiz('A')">
+
+        cute messages
+
+      </button>
+
+
+      <button
+        class="answer"
+        onclick="answerQuiz('B')">
+
+        annoying each other
+
+      </button>
+
+
+      <button
+        class="answer"
+        onclick="answerQuiz('C')">
+
+        kisses
+
+      </button>
+
+
+      <button
+        class="answer"
+        onclick="answerQuiz('D')">
+
+        all of it ♡
+
+      </button>
+
+    </div>
+
+
+    <div id="quizResult">
+      choose wisely.
+    </div>
+
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(7)">
+    ←
+  </button>
+
+  <button
+    class="nav next"
+    onclick="go(9)">
+    →
+  </button>
+
+  <div class="counter">
+    08 / 09
+  </div>
+
+</section>
+<!-- =====================================================
+     9 — ENDING
+===================================================== -->
+
+<section
+  class="screen"
+  id="ending"
+  data-page="9">
+
+  <div class="endingShade"></div>
+
+  <div class="endingBox">
+
+    <small>
+      THAT'S IT
+    </small>
+
+    <h2>
+      I love you.
+    </h2>
+
+    <p>
+      a lot.
+    </p>
+
+    <div class="endingHeart">
+      ♡
+    </div>
+
+  </div>
+
+
+  <button
+    class="nav back"
+    onclick="go(8)">
+    ←
+  </button>
+
+  <div class="counter">
+    09 / 09
+  </div>
+
+</section>
+
+
+<style>
+
+/* =====================================================
+   ENDING
+===================================================== */
+
+#ending .endingShade{
+  position:absolute;
+  inset:0;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(150,70,61,.12),
+      transparent 40%
+    ),
+    rgba(7,3,2,.56);
+}
+
+.endingBox{
+  position:absolute;
+  z-index:30;
+
+  left:50%;
+  top:50%;
+
+  transform:translate(-50%,-50%);
+
+  width:min(850px,85vw);
+
+  color:var(--cream);
+
+  text-align:center;
+}
+
+.endingBox small{
+  display:block;
+
+  margin-bottom:24px;
+
+  color:var(--red);
+
+  font-size:9px;
+  letter-spacing:.4em;
+}
+
+.endingBox h2{
+  font-family:"Italiana",serif;
+
+  font-size:clamp(80px,13vw,190px);
+  font-weight:400;
+
+  line-height:.78;
+}
+
+.endingBox p{
+  margin-top:35px;
+
+  font-family:"Special Elite",serif;
+
+  font-size:clamp(18px,2vw,28px);
+
+  opacity:.72;
+}
+
+.endingHeart{
+  margin-top:35px;
+
+  color:var(--red);
+
+  font-family:"Italiana",serif;
+
+  font-size:70px;
+
+  animation:
+    heartPulse
+    1.7s ease-in-out infinite;
+}
+
+@keyframes heartPulse{
+
+  0%,
+  100%{
+    transform:scale(1);
+  }
+
+  50%{
+    transform:scale(1.14);
+  }
+
+}
+
+
+/* =====================================================
+   PAGE ENTRANCE
+===================================================== */
+
+.enter .memoryHeading,
+.enter .facesTitle,
+.enter .vilniusText,
+.enter .filmTitle,
+.enter .kissMain,
+.enter .adventureText,
+.enter .quizBox,
+.enter .endingBox{
+
+  animation:
+    enterText
+    .8s cubic-bezier(.2,.8,.2,1) both;
+
+}
+
+@keyframes enterText{
+
+  from{
+    opacity:0;
+
+    transform:
+      translateY(24px);
+
+    filter:
+      blur(6px);
+  }
+
+  to{
+    opacity:1;
+
+    filter:
+      blur(0);
+  }
+
+}
+
+</style>
+
+
+<script>
+
+/* =====================================================
+   ELEMENTS
+===================================================== */
+
+const pages =
+  Array.from(
+    document.querySelectorAll(".screen")
+  );
+
+const bgVideo =
+  document.getElementById("bgVideo");
+
+const startBtn =
+  document.getElementById("startBtn");
+
+
+let currentPage = 0;
+
+let started = false;
+
+
+/* =====================================================
+   PAGE CHANGE
+===================================================== */
+
+function go(pageNumber){
+
+  const target =
+    document.querySelector(
+      `[data-page="${pageNumber}"]`
+    );
+
+  if(!target){
+    return;
+  }
+
+
+  pages.forEach(function(page){
+
+    page.classList.remove(
+      "active",
+      "enter"
+    );
+
+  });
+
+
+  target.classList.add("active");
+
+
+  void target.offsetWidth;
+
+
+  target.classList.add("enter");
+
+
+  currentPage = pageNumber;
+
+}
+
+
+/* =====================================================
+   START BUTTON
+   VIDEO + SOUND
+===================================================== */
+
+startBtn.addEventListener(
+  "click",
+  async function(){
+
+    if(started){
+      return;
+    }
+
+
+    started = true;
+
+
+    startBtn.disabled = true;
+
+    startBtn.textContent =
+      "GOOD MORNING ♡";
+
+
+    try{
+
+      bgVideo.muted = false;
+
+      bgVideo.volume = 1;
+
+      bgVideo.currentTime = 0;
+
+
+      await bgVideo.play();
+
+    }
+    catch(error){
+
+      console.log(
+        "Video could not start:",
+        error
+      );
+
+    }
+
+
+    const gate =
+      document.getElementById("gate");
+
+
+    gate.style.transition =
+      "opacity .75s ease";
+
+
+    gate.style.opacity = "0";
+
+
+    setTimeout(function(){
+
+      go(1);
+
+      gate.style.opacity = "";
+
+    },750);
+
+  }
+);
+
+
+/* =====================================================
+   QUIZ
+===================================================== */
+
+function answerQuiz(answer){
+
+  const result =
+    document.getElementById(
+      "quizResult"
+    );
+
+
+  const answers = {
+
+    A:
+      "cute. true. ♡",
+
+    B:
+      "probably our main skill.",
+
+    C:
+      "strong answer. approved.",
+
+    D:
+      "correct. obviously. ♡"
+
+  };
+
+
+  result.style.opacity = "0";
+
+
+  setTimeout(function(){
+
+    result.textContent =
+      answers[answer];
+
+
+    result.style.opacity = "1";
+
+  },170);
+
+}
+
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event){
+
+    if(!started){
+      return;
+    }
+
+
+    if(
+      event.key === "ArrowRight" &&
+      currentPage < 9
+    ){
+
+      go(
+        currentPage + 1
+      );
+
+    }
+
+
+    if(
+      event.key === "ArrowLeft" &&
+      currentPage > 1
+    ){
+
+      go(
+        currentPage - 1
+      );
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   SWIPE
+===================================================== */
+
+let touchStartX = 0;
+
+let touchStartY = 0;
+
+
+document.addEventListener(
+  "touchstart",
+  function(event){
+
+    touchStartX =
+      event.changedTouches[0].clientX;
+
+    touchStartY =
+      event.changedTouches[0].clientY;
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+document.addEventListener(
+  "touchend",
+  function(event){
+
+    if(!started){
+      return;
+    }
+
+
+    const touchEndX =
+      event.changedTouches[0].clientX;
+
+    const touchEndY =
+      event.changedTouches[0].clientY;
+
+
+    const distanceX =
+      touchEndX - touchStartX;
+
+    const distanceY =
+      touchEndY - touchStartY;
+
+
+    if(
+      Math.abs(distanceX) < 70
+    ){
+      return;
+    }
+
+
+    if(
+      Math.abs(distanceX) <
+      Math.abs(distanceY)
+    ){
+      return;
+    }
+
+
+    if(
+      distanceX < 0 &&
+      currentPage < 9
+    ){
+
+      go(
+        currentPage + 1
+      );
+
+    }
+
+
+    if(
+      distanceX > 0 &&
+      currentPage > 1
+    ){
+
+      go(
+        currentPage - 1
+      );
+
+    }
+
+  },
+  {
+    passive:true
+  }
+);
+
+
+/* =====================================================
+   PRELOAD ALL 15 PHOTOS
+===================================================== */
+
+const allPhotos = [
+
+  "0cf6665b-996c-478b-8986-fbf91a1d1260.jpeg",
+
+  "2e12fe77-254f-4f9d-8ec6-963f49578533.jpeg",
+
+  "4bab936b-d286-402a-aba1-514e40037f7e(2).jpeg",
+
+  "62ab95d7-a047-46f7-985a-7a8bebc07649(2).jpeg",
+
+  "385af408-ca01-4557-ad7c-b7b4840df4d5(2).jpeg",
+
+  "4736e1b4-80df-43ef-acbb-10769e73d47a(2).jpeg",
+
+  "8625182f-9daf-45e0-ba51-a43df2565ffa(2).jpeg",
+
+  "92444126-48bb-466c-8efa-a7cddb5aea5e(2).jpeg",
+
+  "a8edecc8-fb95-4286-ba63-b35633502c0d (1)(2).jpeg",
+
+  "d823be97-6b97-4c09-a6e3-08770e50e0f1(2).jpeg",
+
+  "eafe4c88-db2b-4358-84df-e1c235f13f7b(2).jpeg",
+
+  "f52658b8-7033-4267-8dfd-ab81dd57f348 (1)(2).jpeg",
+
+  "fd13db0a-b423-4759-b148-f23dec31a6d4(2).jpeg",
+
+  "IMG_2331(2).jpeg",
+
+  "IMG_2363(2).jpeg"
+
+];
+
+
+allPhotos.forEach(function(source){
+
+  const image =
+    new Image();
+
+  image.src =
+    source;
+
+});
+
+
+/* =====================================================
+   INIT
+===================================================== */
+
+window.addEventListener(
+  "load",
+  function(){
+
+    go(0);
+
+  }
+);
+
+</script>
+
+</div>
+
+</body>
+</html>
